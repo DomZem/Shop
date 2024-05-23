@@ -5,6 +5,7 @@ using Shop.API.Domain.Security;
 using Shop.API.Repository;
 using System.Text;
 using Shop.Infrastructure.Extensions;
+using Shop.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,11 @@ builder.Services.Configure<JwtConfig>(jwtSection);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<IShopSeeder>();
+await seeder.Seed();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

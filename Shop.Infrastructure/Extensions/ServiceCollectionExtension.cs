@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Infrastructure.Persistence;
+using Shop.Infrastructure.Seeders;
 
 namespace Shop.Infrastructure.Extensions
 {
@@ -11,6 +12,8 @@ namespace Shop.Infrastructure.Extensions
         {
             var connectionString = configuration.GetConnectionString("ShopDb");
             services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<IShopSeeder, ShopSeeder>();
         }
     }
 }
