@@ -4,8 +4,12 @@ using Microsoft.OpenApi.Models;
 using Shop.API.Domain.Security;
 using Shop.API.Repository;
 using System.Text;
+using Shop.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
