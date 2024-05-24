@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Domain.Repositories;
 using Shop.Infrastructure.Persistence;
+using Shop.Infrastructure.Repositories;
 using Shop.Infrastructure.Seeders;
 
 namespace Shop.Infrastructure.Extensions
@@ -14,6 +16,7 @@ namespace Shop.Infrastructure.Extensions
             services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IShopSeeder, ShopSeeder>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
         }
     }
 }

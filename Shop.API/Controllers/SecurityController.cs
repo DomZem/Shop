@@ -12,10 +12,11 @@ namespace Shop.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SecurityController : Controller
+    public class SecurityController : ControllerBase
     {
         private readonly IOptions<JwtConfig> _config;
         private readonly IUserRepository _repo;
+
         public SecurityController(IOptions<JwtConfig> config, IUserRepository repo)
         {
             _config = config;

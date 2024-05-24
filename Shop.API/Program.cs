@@ -6,9 +6,11 @@ using Shop.API.Repository;
 using System.Text;
 using Shop.Infrastructure.Extensions;
 using Shop.Infrastructure.Seeders;
+using Shop.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
