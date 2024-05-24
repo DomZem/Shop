@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Shop.Application.Products.Dtos;
 
-namespace Shop.Application.Products.Validators
+namespace Shop.Application.Products.Commands.CreateProduct
 {
-    public class CreateProductDtoValidator : AbstractValidator<CreateProductDto>
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
-        public CreateProductDtoValidator()
+        public CreateProductCommandValidator()
         {
             RuleFor(dto => dto.Name)
                 .Length(3, 25);

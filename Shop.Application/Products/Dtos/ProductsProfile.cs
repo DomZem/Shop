@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shop.Application.Products.Commands.CreateProduct;
 using Shop.Domain.Entities;
 
 namespace Shop.Application.Products.Dtos
@@ -7,7 +8,7 @@ namespace Shop.Application.Products.Dtos
     {
         public ProductsProfile()
         {
-            CreateMap<CreateProductDto, Product>();
+            CreateMap<CreateProductCommand, Product>();
             CreateMap<ProductDto, Product>();
             CreateMap<Product, ProductDto>()
                 .ForMember(p => p.ProductCategory, opt => opt.MapFrom(src => src.ProductCategory));

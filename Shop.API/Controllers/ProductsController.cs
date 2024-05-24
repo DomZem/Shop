@@ -1,24 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Products;
-using Shop.Application.Products.Dtos;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Shop.Application.Products.Commands.CreateProduct;
+using Shop.Application.Products.Queries.GetAllProducts;
+using Shop.Application.Products.Queries.GetProductById;
 
 namespace Shop.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProductsController(IProductsService productsService) : ControllerBase
+    public class ProductsController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await productsService.GetAllProducts();
+            var products = await mediator.Send(new GetAllProductsQuery());
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var product = await productsService.GetById(id);
+            var product = await mediator.Send(new GetProductByIdQuery() { Id = id });
 
             if(product is null)
             {
@@ -29,9 +31,9 @@ namespace Shop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto createProductDto)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
-            int id = await productsService.Create(createProductDto);
+            int id = await mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { id }, null);
         }
     }

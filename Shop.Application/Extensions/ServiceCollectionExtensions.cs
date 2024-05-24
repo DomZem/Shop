@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shop.Application.Products;
 
 namespace Shop.Application.Extensions
 {
@@ -11,7 +10,7 @@ namespace Shop.Application.Extensions
         {
             var applicationAssembly = typeof(ServiceCollectionExtensions).Assembly;
 
-            services.AddScoped<IProductsService, ProductsService>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
 
             services.AddAutoMapper(applicationAssembly);
 
