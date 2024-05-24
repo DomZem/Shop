@@ -14,6 +14,12 @@ namespace Shop.Infrastructure.Repositories
             return entity.Id;
         }
 
+        public async Task Delete(Product entity)
+        {
+            dbContext.Remove(entity);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             var products = await dbContext.Products.Include(p => p.ProductCategory).ToListAsync();
@@ -25,5 +31,8 @@ namespace Shop.Infrastructure.Repositories
             var product = await dbContext.Products.FirstOrDefaultAsync(product => product.Id == id);
             return product;
         }
+
+        public Task SaveChanges() => dbContext.SaveChangesAsync();
+   
     }
 }

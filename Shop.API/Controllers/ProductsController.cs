@@ -1,13 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Products.Commands.CreateProduct;
+using Shop.Application.Products.Commands.DeleteProduct;
+using Shop.Application.Products.Commands.UpdateProduct;
 using Shop.Application.Products.Queries.GetAllProducts;
 using Shop.Application.Products.Queries.GetProductById;
 
 namespace Shop.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/products")]
     public class ProductsController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
@@ -28,6 +30,33 @@ namespace Shop.API.Controllers
             }
 
             return Ok(product);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        {
+            var isDeleted = await mediator.Send(new DeleteProductCommand() { Id = id });
+
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductCommand command)
+        {
+            command.Id = id;
+            var isUpdated = await mediator.Send(new UpdateProductCommand() { Id = id });
+
+            if (!isUpdated)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
         [HttpPost]

@@ -9,5 +9,9 @@ namespace Shop.Domain.Repositories
         Task<Product?> GetByIdAsync(int id);  
         
         Task<int> Create(Product entity);
+
+        Task Delete(Product entity);
+
+        Task SaveChanges();
     }
 }
