@@ -7,6 +7,7 @@ using System.Text;
 using Shop.Infrastructure.Extensions;
 using Shop.Infrastructure.Seeders;
 using Shop.Application.Extensions;
+using Shop.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -40,6 +42,7 @@ builder.Services.AddSwaggerGen(c =>
     }
   });
 });
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,6 +63,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
+
 var jwtSection = builder.Configuration.GetSection("Jwt");
 builder.Services.Configure<JwtConfig>(jwtSection);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -70,13 +74,18 @@ var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IShopSeeder>();
 await seeder.Seed();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
