@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Application.User;
 
 namespace Shop.Application.Extensions
 {
@@ -15,6 +16,10 @@ namespace Shop.Application.Extensions
             services.AddAutoMapper(applicationAssembly);
 
             services.AddValidatorsFromAssembly(applicationAssembly).AddFluentValidationAutoValidation();
+
+            services.AddScoped<IUserContext, UserContext>();
+
+            services.AddHttpContextAccessor();
         }
     }
 }

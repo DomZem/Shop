@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Persistence
 {
-    public class ShopDbContext(DbContextOptions<ShopDbContext> options) : DbContext(options)
+    public class ShopDbContext(DbContextOptions<ShopDbContext> options) : IdentityDbContext<User>(options)
     {
         internal DbSet<ProductCategory> ProductCategories { get; set; }
         

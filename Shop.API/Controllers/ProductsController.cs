@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Products.Commands.CreateProduct;
 using Shop.Application.Products.Commands.DeleteProduct;
@@ -14,7 +15,7 @@ namespace Shop.API.Controllers
     public class ProductsController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
-        
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
         {
             var products = await mediator.Send(new GetAllProductsQuery());
