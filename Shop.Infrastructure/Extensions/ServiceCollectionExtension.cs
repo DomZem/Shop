@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Domain.Entities;
+using Shop.Domain.Interfaces;
 using Shop.Domain.Repositories;
+using Shop.Infrastructure.Authorization.Services;
 using Shop.Infrastructure.Persistence;
 using Shop.Infrastructure.Repositories;
 using Shop.Infrastructure.Seeders;
@@ -16,10 +19,12 @@ namespace Shop.Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("ShopDb");
             services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ShopDbContext>();
+            services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ShopDbContext>();
 
             services.AddScoped<IShopSeeder, ShopSeeder>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
+
+            services.AddScoped<IOrderAuthorizationService, OrderAuthorizationService>();
         }
     }
 }

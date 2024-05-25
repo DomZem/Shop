@@ -7,6 +7,7 @@ using Shop.Application.Products.Commands.UpdateProduct;
 using Shop.Application.Products.Dtos;
 using Shop.Application.Products.Queries.GetAllProducts;
 using Shop.Application.Products.Queries.GetProductById;
+using Shop.Domain.Constants;
 
 namespace Shop.API.Controllers
 {
@@ -30,6 +31,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
@@ -39,6 +41,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductCommand command)
@@ -49,9 +52,9 @@ namespace Shop.API.Controllers
         }
 
         [HttpPost]
-       
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
-        {
+        {   
             int id = await mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { id }, null);
         }

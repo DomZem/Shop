@@ -12,8 +12,8 @@ using Shop.Infrastructure.Persistence;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20240525101250_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20240525131817_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,6 +172,10 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("OrderedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -181,6 +185,8 @@ namespace Shop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderStatusId");
+
+                    b.HasIndex("OrderedById");
 
                     b.HasIndex("ProductId");
 
@@ -385,6 +391,12 @@ namespace Shop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Shop.Domain.Entities.User", "OrderedBy")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Shop.Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -392,6 +404,8 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("OrderStatus");
+
+                    b.Navigation("OrderedBy");
 
                     b.Navigation("Product");
                 });
@@ -415,6 +429,11 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Domain.Entities.ProductCategory", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Shop.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

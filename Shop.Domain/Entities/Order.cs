@@ -15,5 +15,9 @@
         public int OrderStatusId { get; set; }
 
         public OrderStatus OrderStatus { get; set; } = default!;
+
+        public string OrderedById { get; set; } = default!;
+
+        public User OrderedBy { get; set; } = default!;
     }
 }

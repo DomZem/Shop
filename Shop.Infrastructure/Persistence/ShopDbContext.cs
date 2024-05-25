@@ -35,6 +35,11 @@ namespace Shop.Infrastructure.Persistence
                 .HasMany(os => os.Orders)
                 .WithOne(o => o.OrderStatus)
                 .HasForeignKey(p => p.OrderStatusId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Orders)
+                .WithOne(o => o.OrderedBy)
+                .HasForeignKey(o => o.OrderedById);
         }
     }
 }
