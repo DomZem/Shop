@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Users.Commands.AssignUserRole;
 using Shop.Application.Users.Commands.UnassignUserRole;
+using Shop.Application.Users.Dtos;
+using Shop.Application.Users.Queries.GetAllUsers;
 using Shop.Domain.Constants;
 
 namespace Shop.API.Controllers
@@ -25,6 +27,14 @@ namespace Shop.API.Controllers
         {
             await mediator.Send(command);
             return NoContent();
+        }
+
+        [HttpGet("users")]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        {
+            var users = await mediator.Send(new GetAllUsersQuery());
+            return Ok(users);
         }
     }
 }
