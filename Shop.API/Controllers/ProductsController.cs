@@ -29,8 +29,27 @@ namespace Shop.API.Controllers
             return Ok(product);
         }
 
+        [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> CreateProduct(CreateProductCommand command)
+        {   
+            int id = await mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, UpdateProductCommand command)
+        {
+            command.Id = id;
+            await mediator.Send(command);
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = UserRoles.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
@@ -38,24 +57,6 @@ namespace Shop.API.Controllers
             await mediator.Send(new DeleteProductCommand() { Id = id });
             return NoContent();
         }
-
-        [HttpPatch("{id}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductCommand command)
-        {
-            command.Id = id;
-            await mediator.Send(new UpdateProductCommand() { Id = id });
-            return NoContent();
-        }
-
-        [HttpPost]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
-        {   
-            int id = await mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id }, null);
-        }
     }
 }
+ 

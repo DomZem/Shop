@@ -6,8 +6,6 @@ namespace Shop.Application.Products.Commands.UpdateProduct
     {
         public UpdateProductCommandValidator()
         {
-            
-
             RuleFor(dto => dto.Description)
                 .NotEmpty().WithMessage("Description is required.");
         }

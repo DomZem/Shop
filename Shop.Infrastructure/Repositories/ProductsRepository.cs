@@ -33,6 +33,5 @@ namespace Shop.Infrastructure.Repositories
         }
 
         public Task SaveChanges() => dbContext.SaveChangesAsync();
-   
     }
 }

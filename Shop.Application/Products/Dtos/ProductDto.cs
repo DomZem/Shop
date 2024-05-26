@@ -16,9 +16,6 @@ namespace Shop.Application.Products.Dtos
 
         public decimal Price { get; set; }
 
-        // Example if we don't want to expose that piece of data
-        //public int ProductCategoryId { get; set; }
-
         public ProductCategoryDto ProductCategory { get; set; } = default!;
     }
 }

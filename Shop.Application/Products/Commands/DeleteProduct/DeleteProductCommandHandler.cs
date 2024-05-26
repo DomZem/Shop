@@ -8,12 +8,7 @@ namespace Shop.Application.Products.Commands.DeleteProduct
     {
         public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await productsRepository.GetByIdAsync(request.Id);
-            if(product is null)
-            {
-                throw new NotFoundException("Product", request.Id.ToString());
-            }
-
+            var product = await productsRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException("Product", request.Id.ToString());
             await productsRepository.Delete(product);
         }
     }
