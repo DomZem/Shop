@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shop.Application.ProductCategories.Commands.CreateProductCategory;
 using Shop.Domain.Entities;
 
 namespace Shop.Application.ProductCategories.Dtos
@@ -8,6 +9,8 @@ namespace Shop.Application.ProductCategories.Dtos
         public ProductCategoriesProfile()
         {
             CreateMap<ProductCategory, ProductCategoryDto>();
+
+            CreateMap<CreateProductCategoryCommand, ProductCategory>();
         }
     }
 }

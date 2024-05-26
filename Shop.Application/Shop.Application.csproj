@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Products\Validators\" />
+    <Folder Include="ProductCategories\Commands\UpdateProductCategory\" />
   </ItemGroup>
 
 </Project>

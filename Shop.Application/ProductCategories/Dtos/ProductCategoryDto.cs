@@ -1,6 +1,4 @@
-﻿using Shop.Domain.Entities;
-
-namespace Shop.Application.ProductCategories.Dtos
+﻿namespace Shop.Application.ProductCategories.Dtos
 {
     public class ProductCategoryDto
     {

@@ -22,7 +22,14 @@ namespace Shop.Infrastructure.Extensions
             services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ShopDbContext>();
 
             services.AddScoped<IShopSeeder, ShopSeeder>();
+            
+            services.AddScoped<IUsersRepository, UsersRepository>();
+
+            services.AddScoped<IProductCategoriesRepository, ProductCategoriesRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
+
+            services.AddScoped<IOrderStatusesRepository, OrderStatusesRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();  
 
             services.AddScoped<IOrderAuthorizationService, OrderAuthorizationService>();
         }
