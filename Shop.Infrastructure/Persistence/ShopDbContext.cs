@@ -18,6 +18,9 @@ namespace Shop.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Order>()
+                .OwnsOne(o => o.OrderAddress);
+
             modelBuilder.Entity<ProductCategory>()
                 .HasIndex(pc => pc.Name)
                 .IsUnique();

@@ -74,7 +74,8 @@ namespace Shop.Infrastructure.Seeders
                 Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 UserName = "admin",
-                NormalizedUserName = "ADMIN"
+                PhoneNumber = "+48 111 222 333",
+                NormalizedUserName = "ADMIN",
             };
 
             var user = new User
@@ -82,6 +83,7 @@ namespace Shop.Infrastructure.Seeders
                 Email = "kylianmbapper@gmail.com",
                 EmailConfirmed = true,
                 UserName = "kylian",
+                PhoneNumber = "+48 444 555 666",
                 NormalizedEmail = "KYLIAN"
             };
 
@@ -100,7 +102,7 @@ namespace Shop.Infrastructure.Seeders
 
         private IEnumerable<Order> GetOrders()
         {
-            var user = dbContext.Users.First();
+            var user = dbContext.Users.Where(u => u.Email == "kylianmbapper@gmail.com").ToList().First();
 
             if (user == null)
             {
@@ -114,6 +116,13 @@ namespace Shop.Infrastructure.Seeders
                     ProductQuantity = 1,
                     OrderStatus = new OrderStatus() { Name = "Preparation" },
                     OrderedById = user.Id,
+                    OrderAddress = new OrderAddress()
+                    {
+                        Street = "456 Oak Avenue", 
+                        City = "Sometown", 
+                        PostalCode = "67890", 
+                        Country = "Canada"
+                    },
                     Product = new Product()
                     {
                         Name = "Iphone 13",
@@ -128,6 +137,13 @@ namespace Shop.Infrastructure.Seeders
                     ProductQuantity = 2, 
                     OrderStatus = new OrderStatus() { Name = "Shipped" },
                     OrderedById = user.Id,
+                    OrderAddress = new OrderAddress()
+                    {
+                        Street = "789 Pine Lane", 
+                        City = "Birmingham", 
+                        PostalCode = "54321", 
+                        Country = "UK"
+                    },
                     Product = new Product()
                     {
                         Name = "Nike sports sweatshirt",
@@ -142,6 +158,13 @@ namespace Shop.Infrastructure.Seeders
                     ProductQuantity = 3,
                     OrderStatus = new OrderStatus() { Name = "Delivered" },
                     OrderedById = user.Id,
+                    OrderAddress = new OrderAddress()
+                    {
+                        Street = "123 Main Street", 
+                        City = "Anytown",
+                        PostalCode = "12345", 
+                        Country = "USA"
+                    },
                     Product = new Product()
                     {
                         Name = "Game of Thrones - A Clash of Kingdoms",

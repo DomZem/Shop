@@ -213,10 +213,15 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderAddress_Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderAddress_City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderAddress_PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductQuantity = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderStatusId = table.Column<int>(type: "int", nullable: false),
-                    OrderedById = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    OrderedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
