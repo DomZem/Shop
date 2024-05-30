@@ -9,7 +9,7 @@ namespace Shop.Infrastructure.Repositories
     {
         public async Task<IEnumerable<OrderStatus>> GetAllAsync()
         {
-            var orderStatuses = await dbContext.OrderStatuses.ToListAsync();
+            var orderStatuses = await dbContext.OrderStatuses.OrderBy(os => os.Id).ToListAsync();
             return orderStatuses;
         }
 

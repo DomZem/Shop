@@ -12,6 +12,11 @@ namespace Shop.Application.Products.Commands.CreateProduct
             RuleFor(dto => dto.Description)
                 .NotEmpty().WithMessage("Description is required.");
 
+            RuleFor(dto => dto.Price)
+                .GreaterThan(0);
+
+            RuleFor(dto => dto.Quantity)
+                .GreaterThan(0);
             // Rest the rules 
         }
     }

@@ -1,11 +1,38 @@
 ﻿@page
 @model IndexModel
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Log in";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <button class="btn btn-primary">click me</button>
-</div>
+<main class="min-vh-100 p-4 d-flex align-items-center justify-content-center">
+    <form class="w-100 d-flex border p-4 rounded flex-column gap-3" style="max-width: 576px;" method="post">
+        <h3>Shop Panel Admin | Log in</h3>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="LoginUser.Email" class="control-label"></label>
+            <input asp-for="LoginUser.Email" class="form-control" />
+            <span asp-validation-for="LoginUser.Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LoginUser.Password" class="control-label"></label>
+            <input asp-for="LoginUser.Password" class="form-control" />
+            <span asp-validation-for="LoginUser.Password" class="text-danger"></span>
+        </div>
+
+        <button class="btn w-100 btn-primary">Submit</button>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+    </form>
+
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

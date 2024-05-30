@@ -9,12 +9,7 @@ namespace Shop.Application.Products.Commands.UpdateProduct
     {
         public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await productsRepository.GetByIdAsync(request.Id);
-            if (product is null)
-            {
-                throw new NotFoundException("Product", request.Id.ToString());
-            }
-
+            var product = await productsRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException("Product", request.Id.ToString());
             mapper.Map(request, product);
             await productsRepository.SaveChanges();
         }

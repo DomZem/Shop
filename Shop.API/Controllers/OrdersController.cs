@@ -24,7 +24,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = UserRoles.Admin)]    
+        [Authorize]    
         // TODO: Make it visible for owner
         public async Task<ActionResult<OrderDetailsDto?>> GetById([FromRoute] int id)
         {

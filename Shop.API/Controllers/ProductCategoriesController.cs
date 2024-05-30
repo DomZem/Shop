@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.ProductCategories.Commands.CreateProductCategory;
+using Shop.Application.ProductCategories.Commands.UpdateProductCategory;
 using Shop.Application.ProductCategories.Dtos;
 using Shop.Application.ProductCategories.Queries.GetAllProductCategories;
 using Shop.Application.ProductCategories.Queries.GetProductCategoryById;
@@ -33,6 +34,16 @@ namespace Shop.API.Controllers
         {
             int id = await mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateProductCategory([FromRoute] int id, UpdateProductCategoryCommand command)
+        {
+            command.Id = id;
+            await mediator.Send(command);
+            return NoContent();
         }
     }
 }

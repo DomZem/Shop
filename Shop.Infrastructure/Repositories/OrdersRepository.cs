@@ -19,6 +19,7 @@ namespace Shop.Infrastructure.Repositories
             var orders = await dbContext.Orders
                 .Include(o => o.OrderStatus)
                 .Include(o => o.Product)
+                .OrderByDescending(o => o.OrderedAt)
                 .ToListAsync();
             return orders;
         }

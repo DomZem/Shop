@@ -28,7 +28,7 @@ namespace Shop.Infrastructure.Repositories
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            var product = await dbContext.Products.FirstOrDefaultAsync(product => product.Id == id);
+            var product = await dbContext.Products.Include(p => p.ProductCategory).FirstOrDefaultAsync(product => product.Id == id);
             return product;
         }
 

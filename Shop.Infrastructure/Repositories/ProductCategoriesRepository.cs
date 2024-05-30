@@ -9,7 +9,7 @@ namespace Shop.Infrastructure.Repositories
     {
         public async Task<IEnumerable<ProductCategory>> GetAllAsync()
         {
-            var productCategories = await dbContext.ProductCategories.ToListAsync();
+            var productCategories = await dbContext.ProductCategories.OrderBy(pc => pc.Id).ToListAsync();
             return productCategories;
         }
 

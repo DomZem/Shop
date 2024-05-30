@@ -9,12 +9,7 @@ namespace Shop.Application.Orders.Commands.UpdateOrder
     {
         public async Task Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = await ordersRepository.GetByIdAsync(request.Id);
-            if (order is null)
-            {
-                throw new NotFoundException("Order", request.Id.ToString());
-            }
-
+            var order = await ordersRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException("Order", request.Id.ToString());
             mapper.Map(request, order);
             await ordersRepository.SaveChanges();
         }
