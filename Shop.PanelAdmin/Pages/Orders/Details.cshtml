@@ -1,0 +1,80 @@
+﻿@page
+@model Shop.PanelAdmin.Pages.Orders.DetailsModel
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Order Details</h3>
+
+    <div class="d-flex align-items-sm-center gap-2">
+        <a class="btn btn-primary" asp-page="./Update" asp-route-id="">Update</a>
+        <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+    </div>
+</div>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            User Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.OrderedBy.Email)
+        </dd>
+        <dt class="col-sm-2">
+            Ordered At
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.OrderedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Street)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.City)
+        </dd>
+        <dt class="col-sm-2">
+            Postal Code
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.PostalCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.Country)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Country)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.Product.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Product Quantity
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.ProductQuantity)
+        </dd>
+        <dt class="col-sm-2">
+            Total Price
+        </dt>
+        <dd class="col-sm-10">
+            $ @Html.DisplayFor(model => model.Order.TotalPrice)
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.OrderStatus.Name)
+        </dd>
+    </dl>
+</div>

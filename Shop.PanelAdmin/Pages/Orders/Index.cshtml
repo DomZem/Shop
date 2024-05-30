@@ -1,0 +1,43 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Orders List";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Orders List</h3>
+
+    <a class="btn btn-primary" asp-page="./Create">Create New</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Orders[0].Id)</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Ordered At</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model.Orders)
+    {    
+        <tr>
+            <td>@Html.DisplayFor(modelItem => order.Id)</td>
+            <td>@Html.DisplayFor(modelItem => order.Product.Name)</td>
+            <td>@Html.DisplayFor(modelItem => order.ProductQuantity)</td>
+            <td>@Html.DisplayFor(modelItem => order.OrderedAt)</td>
+            <td>@Html.DisplayFor(modelItem => order.TotalPrice)</td>
+            <td>@Html.DisplayFor(modelItem => order.OrderStatus.Name)</td>
+            <td class="d-flex gap-2">
+                <a class="btn btn-dark" asp-page="./Details" asp-route-id="@order.Id">Details</a>
+                <a class="btn btn-secondary" asp-page="./Update" asp-route-id="@order.Id">Update</a>
+                <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@order.Id">Delete</a>
+            </td>
+        </tr>  
+    }
+    </tbody>
+</table>

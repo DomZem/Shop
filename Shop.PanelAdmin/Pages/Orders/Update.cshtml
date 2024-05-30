@@ -1,0 +1,64 @@
+﻿@page
+@model Shop.PanelAdmin.Pages.Orders.UpdateModel
+@{
+    ViewData["Title"] = "Update Order";
+}
+
+<div class="d-flex align-items-center justify-content-between">
+    <h3>Update Order</h3>
+
+    <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="d-flex flex-column gap-3" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Order.Street" class="control-label mb-2"></label>
+                <input asp-for="Order.Street" class="form-control" />
+                <span asp-validation-for="Order.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.City" class="control-label mb-2"></label>
+                <input asp-for="Order.City" class="form-control" />
+                <span asp-validation-for="Order.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label mb-2">Postal Code</label>
+                <input asp-for="Order.PostalCode" class="form-control" />
+                <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Country" class="control-label mb-2"></label>
+                <input asp-for="Order.Country" class="form-control" />
+                <span asp-validation-for="Order.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label mb-2">Product Quantity</label>
+                <input asp-for="Order.ProductQuantity" class="form-control" />
+                <span asp-validation-for="Order.ProductQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.ProductId" class="control-label mb-2">Product</label>
+                <select class="form-control" asp-for="Order.ProductId" asp-items="@Model.Products"></select>
+                <span asp-validation-for="Order.ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderStatusId" class="control-label mb-2">Status</label>
+                <select class="form-control" asp-for="Order.OrderStatusId" asp-items="@Model.OrderStatuses"></select>
+                <span asp-validation-for="Order.OrderStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderedById" class="control-label mb-2">User</label>
+                <select class="form-control" asp-for="Order.OrderedById" asp-items="@Model.Users"></select>
+                <span asp-validation-for="Order.OrderedById" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
