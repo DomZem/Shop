@@ -1,0 +1,34 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Order Statuses List";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Order Statuses List</h3>
+
+    <a class="btn btn-primary" asp-page="./Create">Create New</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.OrderStatuses[0].Id)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderStatuses[0].Name)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderStatus in Model.OrderStatuses)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => orderStatus.Id)</td>
+                <td>@Html.DisplayFor(modelItem => orderStatus.Name)</td>
+                <td>
+                    <a class="btn btn-dark" asp-page="./Details" asp-route-id="@orderStatus.Id">Details</a>
+                    <a class="btn btn-secondary" asp-page="./Update" asp-route-id="@orderStatus.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

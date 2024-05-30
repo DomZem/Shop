@@ -1,0 +1,29 @@
+﻿@page
+@model Shop.PanelAdmin.Pages.OrderStatuses.UpdateModel
+@{
+    ViewData["Title"] = "Update Order Status";
+}
+
+<div class="mb-3 d-flex align-items-center justify-content-between">
+    <h3>Update Order Status</h3>
+
+    <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="d-flex flex-column gap-3" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderStatus.Name" class="control-label mb-2"></label>
+                <input asp-for="OrderStatus.Name" class="form-control" />
+                <span asp-validation-for="OrderStatus.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
