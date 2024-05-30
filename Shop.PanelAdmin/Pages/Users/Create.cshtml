@@ -1,0 +1,38 @@
+﻿@page
+@model Shop.PanelAdmin.Pages.Users.CreateModel
+@{
+}
+
+<div class="d-flex align-items-center justify-content-between">
+    <h3>Create User</h3>
+
+    <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="d-flex flex-column gap-3" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="User.UserName" class="control-label mb-2"></label>
+                <input asp-for="User.UserName" class="form-control" />
+                <span asp-validation-for="User.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Email" class="control-label mb-2"></label>
+                <input asp-for="User.Email" class="form-control" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PhoneNumber" class="control-label mb-2"></label>
+                <input asp-for="User.PhoneNumber" class="form-control" />
+                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
