@@ -1,0 +1,48 @@
+﻿@page
+@model Shop.PanelAdmin.Pages.Products.UpdateModel
+@{
+    ViewData["Title"] = "Update Prodcut";
+}
+<div class="d-flex align-items-center justify-content-between">
+    <h3>Update Product</h3>
+
+    <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="d-flex flex-column gap-3" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Product.Name" class="control-label mb-2"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Description" class="control-label mb-2"></label>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Quantity" class="control-label mb-2"></label>
+                <input asp-for="Product.Quantity" class="form-control" />
+                <span asp-validation-for="Product.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Price" class="control-label mb-2"></label>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductCategoryId" class="control-label mb-2">Product Category</label>
+                <select class="form-control" asp-for="Product.ProductCategoryId" asp-items="@Model.ProductCategories"></select>
+                <span asp-validation-for="Product.ProductCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
