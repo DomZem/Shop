@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using Shop.API.Middlewares;
 
 namespace Shop.API.Extensions
@@ -7,13 +8,13 @@ namespace Shop.API.Extensions
     {
         public static void AddPresentation(this WebApplicationBuilder builder)
         {
-            builder.Services.AddAuthentication();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
             builder.Services.AddControllers();
 
             builder.Services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer"
@@ -24,7 +25,7 @@ namespace Shop.API.Extensions
                     {
                         new OpenApiSecurityScheme
                         {
-                            Reference = new OpenApiReference {Type = ReferenceType.SecurityScheme, Id = "bearerAuth"}
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer"}
                         },
                         []
                     }

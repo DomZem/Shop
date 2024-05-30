@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Shop.Domain.Exceptions;
+
 namespace Shop.Application.Users.Commands.AssignUserRole
 {
     public class AssignUserRoleCommandHandler(UserManager<Domain.Entities.User> userManager, RoleManager<IdentityRole> roleManager) : IRequestHandler<AssignUserRoleCommand>

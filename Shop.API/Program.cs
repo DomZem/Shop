@@ -11,11 +11,6 @@ builder.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-
-//var jwtSection = builder.Configuration.GetSection("Jwt");
-//builder.Services.Configure<JwtConfig>(jwtSection);
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();

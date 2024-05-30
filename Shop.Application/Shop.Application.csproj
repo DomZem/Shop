@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ProductCategories\Commands\UpdateProductCategory\" />
-  </ItemGroup>
-
 </Project>
