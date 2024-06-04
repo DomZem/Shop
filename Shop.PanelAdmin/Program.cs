@@ -1,11 +1,15 @@
-﻿using Shop.PanelAdmin.Config;
+﻿using Shop.GrpcService;
+using Shop.PanelAdmin.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddGrpcClient<Shop.PanelAdmin.PdfGenerator.PdfGeneratorClient>(options =>
+{
+    options.Address = new Uri("https://localhost:5000");
+});
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

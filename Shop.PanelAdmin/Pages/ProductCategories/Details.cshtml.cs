@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RestSharp.Authenticators;
 using RestSharp;
-using ProductService;
+using Shop.Application.ProductCategories.Dtos;
 
 namespace Shop.PanelAdmin.Pages.ProductCategories
 {

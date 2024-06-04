@@ -1,13 +1,16 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using Shop.Application.Orders.Dtos;
 using Shop.PanelAdmin.Config;
+using Microsoft.Net.Http.Headers;
+using System.Text;
 
 namespace Shop.PanelAdmin.Pages.Orders
 {
-    public class IndexModel(ILogger<IndexModel> logger, IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
+    public class IndexModel(ILogger<IndexModel> logger, IOptions<ShopAPIConfig> shopAPIConfig, PdfGenerator.PdfGeneratorClient pdfGeneratorClient) : PageModel
     {
         public List<OrderDto> Orders { get; private set; }
 
@@ -44,9 +47,67 @@ namespace Shop.PanelAdmin.Pages.Orders
             {
                 ErrorMessage = "asda";
             }
+        }
 
+        public async Task<ActionResult> OnPostAsync()
+        {
+            var token = HttpContext.Session.GetString("AuthToken");
+            var options = new RestClientOptions("http://example.com")
+            {
+                Authenticator = new JwtAuthenticator(token),
+                BaseUrl = new Uri($"https://localhost:7270")
+            };
 
-            //Orders = await client.GetAsync<List<OrderDto>>(request);
+            var client = new RestClient(options);
+            var request = new RestRequest($"api/orders");
+            request.AddHeader("content-type", "application/json");
+            var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
+
+            var htmlContent = GenerateHtmlContent(response.Data);
+
+            var document = await pdfGeneratorClient.GenerateAsync(new HtmlDocumentRequest()
+            {
+                Content = htmlContent,
+                Name = "Orders Summary"
+            });
+
+            var stream = new MemoryStream(document.Content.ToByteArray());
+
+            return new FileStreamResult(stream, new MediaTypeHeaderValue("application/pdf"))
+            {
+                FileDownloadName = "orders-summary.pdf"
+            };
+        }
+
+        private string GenerateHtmlContent(List<OrderDto> orders)
+        {
+            var sb = new StringBuilder();
+            sb.Append("<h1>Orders Summary</h1>");
+            sb.Append("<table border='1'>");
+            sb.Append("<tr>");
+            sb.Append("<th>ID</th>");
+            sb.Append("<th>Ordered At</th>");
+            sb.Append("<th>Product Name</th>");
+            sb.Append("<th>Product Quantity</th>");
+            sb.Append("<th>Order Status</th>");
+            sb.Append("<th>Total Price</th>");
+            sb.Append("</tr>");
+
+            foreach (var order in orders)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{order.Id}</td>");
+                sb.Append($"<td>{order.OrderedAt}</td>");
+                sb.Append($"<td>{order.Product.Name}</td>");
+                sb.Append($"<td>{order.ProductQuantity}</td>");
+                sb.Append($"<td>{order.OrderStatus.Name}</td>");
+                sb.Append($"<td>{order.TotalPrice}</td>");
+                sb.Append("</tr>");
+            }
+
+            sb.Append("</table>");
+
+            return sb.ToString();
         }
     }
 }
