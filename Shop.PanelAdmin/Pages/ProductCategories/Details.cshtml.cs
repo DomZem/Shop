@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using RestSharp.Authenticators;
 using RestSharp;
 using Shop.Application.ProductCategories.Dtos;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.ProductCategories
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         public ProductCategoryDto ProductCategory { get; set; } = default!;
 
@@ -27,7 +29,7 @@ namespace Shop.PanelAdmin.Pages.ProductCategories
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);

@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using Shop.Application.Users.Commands.UpdateUser;
 using Shop.Application.Users.Dtos;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Users
 {
-    public class UpdateModel(ILogger<UpdateModel> logger) : PageModel
+    public class UpdateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public UpdateUserCommand User { get; set; } = default!;
@@ -21,7 +23,7 @@ namespace Shop.PanelAdmin.Pages.Users
 
             var options = new RestClientOptions()
             {
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
@@ -69,11 +71,11 @@ namespace Shop.PanelAdmin.Pages.Users
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/identity/users/{id}");
+            var request = new RestRequest($"/api/identity/users/{id}");
             request.AddHeader("content-type", "application/json");
             request.AddBody(User);
             var response = await client.ExecutePutAsync(request);

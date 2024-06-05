@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using Shop.Application.Products.Dtos;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Products
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         public ProductDto Product { get; set; } = default!;
 
@@ -19,7 +21,7 @@ namespace Shop.PanelAdmin.Pages.Products
 
             var options = new RestClientOptions()
             {
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
@@ -54,11 +56,11 @@ namespace Shop.PanelAdmin.Pages.Products
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/products/{id}");
+            var request = new RestRequest($"/api/products/{id}");
             request.AddHeader("content-type", "application/json");
             var response = await client.ExecuteDeleteAsync(request);
 

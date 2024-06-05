@@ -7,10 +7,12 @@ using Shop.Application.Orders.Commands.CreateOrder;
 using Shop.Application.Products.Dtos;
 using Shop.Application.Users.Dtos;
 using Shop.Application.OrderStatuses.Dtos;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Orders
 {
-    public class CreateModel : PageModel
+    public class CreateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public CreateOrderCommand Order { get; set; } = default!;
@@ -33,18 +35,18 @@ namespace Shop.PanelAdmin.Pages.Orders
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
 
-            var productsRequest = new RestRequest("api/products");
+            var productsRequest = new RestRequest("/api/products");
             productsRequest.AddHeader("content-type", "application/json");
 
-            var orderStatusesRequest = new RestRequest("api/orderStatuses");
+            var orderStatusesRequest = new RestRequest("/api/orderStatuses");
             orderStatusesRequest.AddHeader("content-type", "application/json");
 
-            var usersRequest = new RestRequest("api/identity/users");
+            var usersRequest = new RestRequest("/api/identity/users");
             usersRequest.AddHeader("content-type", "application/json");
 
             var productsResponse = await client.ExecuteGetAsync<List<ProductDto>>(productsRequest);
@@ -80,11 +82,11 @@ namespace Shop.PanelAdmin.Pages.Orders
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/orders");
+            var request = new RestRequest("/api/orders");
             request.AddHeader("content-type", "application/json");
             request.AddBody(Order);
             var response = await client.ExecutePostAsync(request);

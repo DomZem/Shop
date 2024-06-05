@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using RestSharp.Authenticators;
 using RestSharp;
 using Shop.Application.Users.Commands.CreateUser;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Users
 {
-    public class CreateModel : PageModel
+    public class CreateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public CreateUserCommand User { get; set; } = default!;
@@ -28,11 +30,11 @@ namespace Shop.PanelAdmin.Pages.Users
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/identity/users");
+            var request = new RestRequest("/api/identity/users");
             request.AddHeader("content-type", "application/json");
             request.AddBody(User);
             var response = await client.ExecutePostAsync(request);

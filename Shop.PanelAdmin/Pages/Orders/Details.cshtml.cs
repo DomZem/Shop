@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using Shop.Application.Orders.Dtos;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Orders
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         public OrderDetailsDto Order { get; set; } = default!;
 
@@ -27,7 +29,7 @@ namespace Shop.PanelAdmin.Pages.Orders
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);

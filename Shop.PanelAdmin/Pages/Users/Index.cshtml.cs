@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
-using Shop.Application.OrderStatuses.Dtos;
 using Shop.Application.Users.Dtos;
 using Shop.PanelAdmin.Config;
 
@@ -20,14 +19,14 @@ namespace Shop.PanelAdmin.Pages.Users
 
             if (token != null)
             {
-                var options = new RestClientOptions("http://example.com")
+                var options = new RestClientOptions()
                 {
                     Authenticator = new JwtAuthenticator(token),
-                    BaseUrl = new Uri($"https://localhost:7270")
+                    BaseUrl = new Uri(shopAPIConfig.Value.URL)
                 };
 
                 var client = new RestClient(options);
-                var request = new RestRequest($"api/identity/users");
+                var request = new RestRequest("/api/identity/users");
                 request.AddHeader("content-type", "application/json");
                 var response = await client.ExecuteGetAsync<List<UserDto>>(request);
 

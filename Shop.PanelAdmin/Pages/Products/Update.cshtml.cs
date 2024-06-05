@@ -1,14 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 using Shop.Application.ProductCategories.Dtos;
 using Shop.Application.Products.Commands.UpdateProduct;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Products
 {
-    public class UpdateModel : PageModel
+    public class UpdateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public UpdateProductCommand Product { get; set; } = default!;
@@ -32,15 +34,15 @@ namespace Shop.PanelAdmin.Pages.Products
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
             
-            var productCategoriesRequest = new RestRequest("api/productCategories");
+            var productCategoriesRequest = new RestRequest("/api/productCategories");
             productCategoriesRequest.AddHeader("content-type", "application/json");
 
-            var productRequest = new RestRequest($"api/products/{id}");
+            var productRequest = new RestRequest($"/api/products/{id}");
             productRequest.AddHeader("content-type", "application/json");
 
             var productCategoriesResponse = await client.ExecuteGetAsync<List<ProductCategoryDto>>(productCategoriesRequest);
@@ -79,11 +81,11 @@ namespace Shop.PanelAdmin.Pages.Products
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/products/{id}");
+            var request = new RestRequest($"/api/products/{id}");
             request.AddHeader("content-type", "application/json");
             request.AddBody(Product);
             var response = await client.ExecutePutAsync(request);

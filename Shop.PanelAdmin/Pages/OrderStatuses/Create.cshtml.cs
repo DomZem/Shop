@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using RestSharp.Authenticators;
 using RestSharp;
 using Shop.Application.OrderStatuses.Commands.CreateOrderStatus;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.OrderStatuses
 {
-    public class CreateModel : PageModel
+    public class CreateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public CreateOrderStatusCommand OrderStatus { get; set; } = default!;
@@ -28,11 +30,11 @@ namespace Shop.PanelAdmin.Pages.OrderStatuses
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/orderStatuses");
+            var request = new RestRequest("/api/orderStatuses");
             request.AddHeader("content-type", "application/json");
             request.AddBody(OrderStatus);
             var response = await client.ExecutePostAsync(request);

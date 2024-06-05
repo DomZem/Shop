@@ -28,8 +28,8 @@ namespace Shop.PanelAdmin.Pages
                 return Page();
             }
 
-            var client = new RestClient($"http://{shopAPIConfig.Value.Host}:{shopAPIConfig.Value.Port}");
-            var request = new RestRequest("api/identity/login").AddBody(LoginUser);
+            var client = new RestClient(shopAPIConfig.Value.URL);
+            var request = new RestRequest("/api/identity/login").AddBody(LoginUser);
 
             try
             {

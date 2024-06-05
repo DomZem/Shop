@@ -5,10 +5,12 @@ using RestSharp;
 using Shop.Application.Products.Commands.CreateProduct;
 using Shop.Application.ProductCategories.Dtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Products
 {
-    public class CreateModel(ILogger<CreateModel> logger) : PageModel
+    public class CreateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public CreateProductCommand Product { get; set; } = default!;
@@ -27,11 +29,11 @@ namespace Shop.PanelAdmin.Pages.Products
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/productCategories");
+            var request = new RestRequest("/api/productCategories");
             request.AddHeader("content-type", "application/json");
             var response = await client.ExecuteGetAsync<List<ProductCategoryDto>>(request);
 
@@ -60,11 +62,11 @@ namespace Shop.PanelAdmin.Pages.Products
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/products");
+            var request = new RestRequest("/api/products");
             request.AddHeader("content-type", "application/json");    
             request.AddBody(Product);
             var response = await client.ExecutePostAsync(request);

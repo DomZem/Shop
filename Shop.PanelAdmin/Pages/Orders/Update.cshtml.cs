@@ -8,10 +8,12 @@ using Shop.Application.Users.Dtos;
 using Shop.Application.Orders.Commands.UpdateOrder;
 using Shop.Application.Products.Dtos;
 using Shop.Application.Orders.Dtos;
+using Microsoft.Extensions.Options;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Orders
 {
-    public class UpdateModel : PageModel
+    public class UpdateModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         [BindProperty]
         public UpdateOrderCommand Order { get; set; } = default!;
@@ -39,21 +41,21 @@ namespace Shop.PanelAdmin.Pages.Orders
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
 
-            var orderRequest = new RestRequest($"api/orders/{id}");
+            var orderRequest = new RestRequest($"/api/orders/{id}");
             orderRequest.AddHeader("content-type", "application/json");
 
-            var productsRequest = new RestRequest("api/products");
+            var productsRequest = new RestRequest("/api/products");
             productsRequest.AddHeader("content-type", "application/json");
 
-            var orderStatusesRequest = new RestRequest("api/orderStatuses");
+            var orderStatusesRequest = new RestRequest("/api/orderStatuses");
             orderStatusesRequest.AddHeader("content-type", "application/json");
 
-            var usersRequest = new RestRequest("api/identity/users");
+            var usersRequest = new RestRequest("/api/identity/users");
             usersRequest.AddHeader("content-type", "application/json");
 
             var orderResponse = await client.ExecuteGetAsync<OrderDetailsDto>(orderRequest);
@@ -110,11 +112,11 @@ namespace Shop.PanelAdmin.Pages.Orders
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/orders/{id}");
+            var request = new RestRequest($"/api/orders/{id}");
             request.AddHeader("content-type", "application/json");
             request.AddBody(Order);
             var response = await client.ExecutePutAsync(request);

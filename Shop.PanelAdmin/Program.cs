@@ -1,8 +1,6 @@
-﻿using Shop.GrpcService;
-using Shop.PanelAdmin.Config;
+﻿using Shop.PanelAdmin.Config;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 builder.Services.AddRazorPages();

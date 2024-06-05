@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using Shop.Application.Users.Dtos;
+using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.Users
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         public UserDto User { get; set; } = default!;
 
@@ -18,7 +20,7 @@ namespace Shop.PanelAdmin.Pages.Users
 
             var options = new RestClientOptions()
             {
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);

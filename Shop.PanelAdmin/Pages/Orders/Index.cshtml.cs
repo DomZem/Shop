@@ -22,14 +22,14 @@ namespace Shop.PanelAdmin.Pages.Orders
 
             if(token != null)
             {
-                var options = new RestClientOptions("http://example.com")
+                var options = new RestClientOptions()
                 {
                     Authenticator = new JwtAuthenticator(token),
-                    BaseUrl = new Uri($"https://localhost:7270")
+                    BaseUrl = new Uri(shopAPIConfig.Value.URL)
                 };
 
                 var client = new RestClient(options);
-                var request = new RestRequest($"api/orders");
+                var request = new RestRequest("/api/orders");
                 request.AddHeader("content-type", "application/json");
                 var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
 
@@ -52,14 +52,14 @@ namespace Shop.PanelAdmin.Pages.Orders
         public async Task<ActionResult> OnPostAsync()
         {
             var token = HttpContext.Session.GetString("AuthToken");
-            var options = new RestClientOptions("http://example.com")
+            var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
-                BaseUrl = new Uri($"https://localhost:7270")
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"api/orders");
+            var request = new RestRequest("/api/orders");
             request.AddHeader("content-type", "application/json");
             var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
 
@@ -82,6 +82,7 @@ namespace Shop.PanelAdmin.Pages.Orders
         private string GenerateHtmlContent(List<OrderDto> orders)
         {
             var sb = new StringBuilder();
+
             sb.Append("<h1>Orders Summary</h1>");
             sb.Append("<table border='1'>");
             sb.Append("<tr>");
@@ -93,6 +94,8 @@ namespace Shop.PanelAdmin.Pages.Orders
             sb.Append("<th>Total Price</th>");
             sb.Append("</tr>");
 
+            decimal totalPrice = 0;
+
             foreach (var order in orders)
             {
                 sb.Append("<tr>");
@@ -103,7 +106,13 @@ namespace Shop.PanelAdmin.Pages.Orders
                 sb.Append($"<td>{order.OrderStatus.Name}</td>");
                 sb.Append($"<td>{order.TotalPrice}</td>");
                 sb.Append("</tr>");
+                totalPrice += order.TotalPrice;
             }
+
+            sb.Append("<tr>");
+            sb.Append("<td colspan='5' style='text-align:right'><strong>Total:</strong></td>");
+            sb.Append($"<td><strong>{totalPrice}</strong></td>");
+            sb.Append("</tr>");
 
             sb.Append("</table>");
 
