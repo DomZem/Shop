@@ -35,7 +35,7 @@
             <td>@Html.DisplayFor(modelItem => order.Product.Name)</td>
             <td>@Html.DisplayFor(modelItem => order.ProductQuantity)</td>
             <td>@Html.DisplayFor(modelItem => order.OrderedAt)</td>
-            <td>@Html.DisplayFor(modelItem => order.TotalPrice)</td>
+            <td>$ @Html.DisplayFor(modelItem => order.TotalPrice)</td>
             <td>@Html.DisplayFor(modelItem => order.OrderStatus.Name)</td>
             <td class="d-flex gap-2">
                 <a class="btn btn-dark" asp-page="./Details" asp-route-id="@order.Id">Details</a>

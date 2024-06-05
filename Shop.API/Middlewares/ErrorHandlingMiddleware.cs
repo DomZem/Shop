@@ -21,6 +21,11 @@ namespace Shop.API.Middlewares
                 context.Response.StatusCode = 403;
                 await context.Response.WriteAsync("Access forbidden");
             }
+            catch(ProductUnavailableException)
+            {
+                context.Response.StatusCode = 409;
+                await context.Response.WriteAsync("Product is unavailable");
+            }
             catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);

@@ -58,7 +58,9 @@ namespace Shop.PanelAdmin.Pages.Orders
                 return NotFound();
             }
 
-            Products = productsResponse.Data.Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = $"{p.Name} - $ {p.Quantity}" }).ToList();
+            Products = productsResponse.Data
+                .Where(p => p.Quantity > 0)
+                .Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = $"{p.Name} - $ {p.Price} | {p.Quantity} left" }).ToList();
             OrderStatuses = orderStatusesResponse.Data.Select(os => new SelectListItem() { Value = os.Id.ToString(), Text = os.Name }).ToList();
             Users = usersResponse.Data.Select(u => new SelectListItem() { Value = u.Id.ToString(), Text = u.Email }).ToList();
 
@@ -94,6 +96,10 @@ namespace Shop.PanelAdmin.Pages.Orders
             if (response.IsSuccessful)
             {
                 return RedirectToPage("./Index");
+            }
+            else
+            {
+                 ModelState.AddModelError(string.Empty, response.Content);
             }
 
             return Page();
