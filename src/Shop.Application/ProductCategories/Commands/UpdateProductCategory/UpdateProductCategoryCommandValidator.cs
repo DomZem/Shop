@@ -6,7 +6,8 @@ namespace Shop.Application.ProductCategories.Commands.UpdateProductCategory
     {
         public UpdateProductCategoryCommandValidator()
         {
-            
+            RuleFor(dto => dto.Name)
+                .Length(3, 50);
         }
     }
 }

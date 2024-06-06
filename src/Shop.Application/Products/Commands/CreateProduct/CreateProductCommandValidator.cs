@@ -7,17 +7,19 @@ namespace Shop.Application.Products.Commands.CreateProduct
         public CreateProductCommandValidator()
         {
             RuleFor(dto => dto.Name)
-                .Length(3, 25);
+                .Length(3, 50);
 
             RuleFor(dto => dto.Description)
-                .NotEmpty().WithMessage("Description is required.");
+                .NotEmpty()
+                .WithMessage("Description is required.");
 
             RuleFor(dto => dto.Price)
-                .GreaterThan(0);
+                .GreaterThan(0)
+                .WithMessage("Price must be a non-negative number.");
 
             RuleFor(dto => dto.Quantity)
-                .GreaterThan(0);
-            // Rest the rules 
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Quantity must be a non-negative number.");
         }
     }
 }

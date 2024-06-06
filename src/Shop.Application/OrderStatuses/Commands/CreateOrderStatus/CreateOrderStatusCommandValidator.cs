@@ -7,7 +7,7 @@ namespace Shop.Application.OrderStatuses.Commands.CreateOrderStatus
         public CreateOrderStatusCommandValidator()
         {
             RuleFor(dto => dto.Name)
-                .Length(3, 25);
+                .Length(3, 50);
         }
     }
 }

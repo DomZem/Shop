@@ -6,7 +6,8 @@ namespace Shop.Application.OrderStatuses.Commands.UpdateOrderStatus
     {
         public UpdateOrderStatusCommandValidator()
         {
-            
+            RuleFor(dto => dto.Name)
+                .Length(3, 50);
         }
     }
 }

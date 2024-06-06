@@ -7,7 +7,7 @@ namespace Shop.Application.ProductCategories.Commands.CreateProductCategory
         public CreateProductCategoryCommandValidator()
         {
             RuleFor(dto => dto.Name)
-                .Length(3, 25);
+                .Length(3, 50);
         }
     }
 }
