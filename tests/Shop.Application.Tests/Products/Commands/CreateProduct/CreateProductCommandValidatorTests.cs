@@ -36,7 +36,6 @@ namespace Shop.Application.Products.Commands.CreateProduct.Tests
             var command = new CreateProductCommand()
             {
                 Name = "Te",
-                ProductCategoryId = 1,
                 Description = "    ",
                 Price = -100,
                 Quantity = -1,

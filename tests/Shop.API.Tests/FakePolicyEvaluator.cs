@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Shop.API.Tests
 {
-    public class FakePolicyEvaluator : IPolicyEvaluator
+    internal class FakePolicyEvaluator : IPolicyEvaluator
     {
         public Task<AuthenticateResult> AuthenticateAsync(AuthorizationPolicy policy, HttpContext context)
         {
