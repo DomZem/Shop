@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shop.API.Middlewares;
+using System.Text;
 
 namespace Shop.API.Extensions
 {
@@ -8,7 +10,25 @@ namespace Shop.API.Extensions
     {
         public static void AddPresentation(this WebApplicationBuilder builder)
         {
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+                };
+            });
 
             builder.Services.AddControllers();
 
@@ -25,7 +45,7 @@ namespace Shop.API.Extensions
                     {
                         new OpenApiSecurityScheme
                         {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer"}
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
                         },
                         []
                     }
@@ -36,7 +56,7 @@ namespace Shop.API.Extensions
             
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
-            //builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization();
         }
     }
 }

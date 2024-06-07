@@ -10,11 +10,16 @@ namespace Shop.API.Middlewares
             {
                 await next.Invoke(context);  
             } 
-            catch(NotFoundException notFound)
+            catch(ExistingUserException exception)
             {
-                logger.LogWarning(notFound.Message);
+                context.Response.StatusCode = 409;
+                await context.Response.WriteAsync(exception.Message);
+            }
+            catch(NotFoundException exception)
+            {
+                logger.LogWarning(exception.Message);
                 context.Response.StatusCode = 404;
-                await context.Response.WriteAsync(notFound.Message);
+                await context.Response.WriteAsync(exception.Message);
             }
             catch(ForbiddenException)
             {

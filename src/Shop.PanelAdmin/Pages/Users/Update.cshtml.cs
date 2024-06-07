@@ -27,7 +27,7 @@ namespace Shop.PanelAdmin.Pages.Users
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"/api/identity/users/{id}");
+            var request = new RestRequest($"/api/users/{id}");
             request.AddHeader("content-type", "application/json");
             var response = await client.ExecuteGetAsync<UserDto>(request);
 
@@ -75,7 +75,7 @@ namespace Shop.PanelAdmin.Pages.Users
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest($"/api/identity/users/{id}");
+            var request = new RestRequest($"/api/users/{id}");
             request.AddHeader("content-type", "application/json");
             request.AddBody(User);
             var response = await client.ExecutePutAsync(request);

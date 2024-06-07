@@ -2,14 +2,17 @@ using Shop.Infrastructure.Extensions;
 using Shop.Infrastructure.Seeders;
 using Shop.Application.Extensions;
 using Shop.API.Middlewares;
-using Shop.Domain.Entities;
 using Shop.API.Extensions;
+using Shop.API.Domain.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+var jwtSection = builder.Configuration.GetSection("Jwt");
+builder.Services.Configure<JwtConfig>(jwtSection);
 
 var app = builder.Build();
 
@@ -27,8 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGroup("api/identity").WithTags("Identity").MapIdentityApi<User>();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

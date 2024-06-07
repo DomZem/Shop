@@ -19,7 +19,14 @@ namespace Shop.Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("ShopDb");
             services.AddDbContext<ShopDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ShopDbContext>();
+            services.AddIdentityCore<User>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ShopDbContext>();
+
+            //services.AddDefaultIdentity<User>()
+            //        .AddRoles<IdentityRole>()
+            //        .AddEntityFrameworkStores<ShopDbContext>()
+            //        .AddDefaultTokenProviders();
 
             services.AddScoped<IShopSeeder, ShopSeeder>();
             

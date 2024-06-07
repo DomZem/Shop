@@ -34,7 +34,7 @@ namespace Shop.PanelAdmin.Pages.Users
             };
 
             var client = new RestClient(options);
-            var request = new RestRequest("/api/identity/users");
+            var request = new RestRequest("/api/users");
             request.AddHeader("content-type", "application/json");
             request.AddBody(User);
             var response = await client.ExecutePostAsync(request);

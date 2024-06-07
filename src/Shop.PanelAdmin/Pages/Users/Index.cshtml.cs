@@ -26,7 +26,7 @@ namespace Shop.PanelAdmin.Pages.Users
                 };
 
                 var client = new RestClient(options);
-                var request = new RestRequest("/api/identity/users");
+                var request = new RestRequest("/api/users");
                 request.AddHeader("content-type", "application/json");
                 var response = await client.ExecuteGetAsync<List<UserDto>>(request);
 

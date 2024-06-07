@@ -13,11 +13,11 @@ using Shop.Domain.Constants;
 
 namespace Shop.API.Controllers
 {
-    [Route("api/identity")]
+    [Route("api/users")]
     [ApiController]
-    public class IdentityController(ILogger<IdentityController> logger,IMediator mediator) : ControllerBase
+    public class UsersController(IMediator mediator) : ControllerBase
     {
-        [HttpPost("userRole")]
+        [HttpPost("role")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> AssignUserRole(AssignUserRoleCommand command)
         {
@@ -25,7 +25,7 @@ namespace Shop.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("userRole")]
+        [HttpDelete("role")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> UnassignUserRole(UnassignUserRoleCommand command)
         {
@@ -33,7 +33,7 @@ namespace Shop.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("users")]
+        [HttpGet]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
@@ -41,15 +41,14 @@ namespace Shop.API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("users/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<UserDto?>> GetById([FromRoute] string id)
         {
-            logger.LogInformation("GET USER");
             var user = await mediator.Send(new GetUserByIdQuery() { Id = id });
             return Ok(user);
         }
 
-        [HttpPost("users")]
+        [HttpPost]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> CreateUser(CreateUserCommand command)
         {
@@ -57,7 +56,7 @@ namespace Shop.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id }, null);
         }
 
-        [HttpPut("users/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = UserRoles.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -68,7 +67,7 @@ namespace Shop.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("users/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

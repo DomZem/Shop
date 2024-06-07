@@ -29,12 +29,12 @@ namespace Shop.PanelAdmin.Pages
             }
 
             var client = new RestClient(shopAPIConfig.Value.URL);
-            var request = new RestRequest("/api/identity/login").AddBody(LoginUser);
+            var request = new RestRequest("/api/auth/login").AddBody(LoginUser);
 
             try
             {
                 var response = await client.PostAsync<AccessTokenResponse>(request);
-               
+                logger.LogInformation($"response {response}");
                 if (response.AccessToken != string.Empty)
                 {
                     
