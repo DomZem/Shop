@@ -84,6 +84,8 @@ namespace Shop.PanelAdmin.Pages.ProductCategories
                 return RedirectToPage("./Index");
             }
 
+            ModelState.AddModelError(string.Empty, response.Content);
+
             return Page();
         }
     }

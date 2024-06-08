@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using Shop.Application.Products.Dtos;
@@ -10,12 +11,21 @@ namespace Shop.PanelAdmin.Pages.Products
     {
         public List<ProductDto> Products { get; private set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var client = new RestClient(shopAPIConfig.Value.URL);
             var request = new RestRequest("/api/products") { RequestFormat = DataFormat.Json };
 
-            Products = await client.GetAsync<List<ProductDto>>(request);
+            var response = await client.ExecuteGetAsync<List<ProductDto>>(request);
+
+            if(!response.IsSuccessStatusCode || response.Data == null)
+            {
+                return BadRequest();
+            }
+
+            Products = response.Data;
+
+            return Page();
         }
     }
 }

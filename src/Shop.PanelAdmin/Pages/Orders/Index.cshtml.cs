@@ -10,48 +10,19 @@ using System.Text;
 
 namespace Shop.PanelAdmin.Pages.Orders
 {
-    public class IndexModel(ILogger<IndexModel> logger, IOptions<ShopAPIConfig> shopAPIConfig, PdfGenerator.PdfGeneratorClient pdfGeneratorClient) : PageModel
+    public class IndexModel(IOptions<ShopAPIConfig> shopAPIConfig, PdfGenerator.PdfGeneratorClient pdfGeneratorClient) : PageModel
     {
         public List<OrderDto> Orders { get; private set; }
 
-        public string? ErrorMessage = string.Empty;
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var token = HttpContext.Session.GetString("AuthToken");
-
-            if(token != null)
+                
+            if(token == null)
             {
-                var options = new RestClientOptions()
-                {
-                    Authenticator = new JwtAuthenticator(token),
-                    BaseUrl = new Uri(shopAPIConfig.Value.URL)
-                };
-
-                var client = new RestClient(options);
-                var request = new RestRequest("/api/orders");
-                request.AddHeader("content-type", "application/json");
-                var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
-
-                if(response.IsSuccessful)
-                {
-                    Orders = response.Data;
-                    logger.LogInformation($"orders length: {response.Data.Count}");
-                }
-                else
-                {
-                    ErrorMessage = "asda";
-                }
-            }
-            else
-            {
-                ErrorMessage = "asda";
-            }
-        }
-
-        public async Task<ActionResult> OnPostAsync()
-        {
-            var token = HttpContext.Session.GetString("AuthToken");
+                return Unauthorized();
+            } 
+            
             var options = new RestClientOptions()
             {
                 Authenticator = new JwtAuthenticator(token),
@@ -62,6 +33,41 @@ namespace Shop.PanelAdmin.Pages.Orders
             var request = new RestRequest("/api/orders");
             request.AddHeader("content-type", "application/json");
             var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
+
+            if(!response.IsSuccessStatusCode || response.Data == null)
+            {
+                return BadRequest();
+            }
+
+            Orders = response.Data;
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var token = HttpContext.Session.GetString("AuthToken");
+
+            if(token == null) 
+            {
+                return Unauthorized();
+            }
+
+            var options = new RestClientOptions()
+            {
+                Authenticator = new JwtAuthenticator(token),
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
+            };
+
+            var client = new RestClient(options);
+            var request = new RestRequest("/api/orders");
+            request.AddHeader("content-type", "application/json");
+            var response = await client.ExecuteGetAsync<List<OrderDto>>(request);
+
+            if(!response.IsSuccessStatusCode || response.Data == null)
+            {
+                return BadRequest();
+            }
 
             var htmlContent = GenerateHtmlContent(response.Data);
 

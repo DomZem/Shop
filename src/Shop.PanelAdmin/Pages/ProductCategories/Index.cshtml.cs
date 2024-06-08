@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -11,38 +12,34 @@ namespace Shop.PanelAdmin.Pages.ProductCategories
     {
         public List<ProductCategoryDto> ProductCategories { get; private set; }
 
-        public string? ErrorMessage = string.Empty;
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var token = HttpContext.Session.GetString("AuthToken");
-
-            if (token != null)
+                
+            if(token == null)
             {
-                var options = new RestClientOptions()
-                {
-                    Authenticator = new JwtAuthenticator(token),
-                    BaseUrl = new Uri(shopAPIConfig.Value.URL)
-                };
-
-                var client = new RestClient(options);
-                var request = new RestRequest("/api/productCategories");
-                request.AddHeader("content-type", "application/json");
-                var response = await client.ExecuteGetAsync<List<ProductCategoryDto>>(request);
-
-                if (response.IsSuccessful)
-                {
-                    ProductCategories = response.Data;
-                }
-                else
-                {
-                    ErrorMessage = "asda";
-                }
+                return Unauthorized();
             }
-            else
+                
+            var options = new RestClientOptions()
             {
-                ErrorMessage = "asda";
+                Authenticator = new JwtAuthenticator(token),
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
+            };
+
+            var client = new RestClient(options);
+            var request = new RestRequest("/api/productCategories");
+            request.AddHeader("content-type", "application/json");
+            var response = await client.ExecuteGetAsync<List<ProductCategoryDto>>(request);
+
+            if(!response.IsSuccessStatusCode || response.Data == null)
+            {
+                return BadRequest();
             }
+
+            ProductCategories = response.Data;
+
+            return Page();
         }
     }
 }

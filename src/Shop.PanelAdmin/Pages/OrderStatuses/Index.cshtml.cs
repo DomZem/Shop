@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -7,44 +8,38 @@ using Shop.PanelAdmin.Config;
 
 namespace Shop.PanelAdmin.Pages.OrderStatuses
 {
-    public class IndexModel(ILogger<IndexModel> logger, IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
+    public class IndexModel(IOptions<ShopAPIConfig> shopAPIConfig) : PageModel
     {
         public List<OrderStatusDto> OrderStatuses { get; private set; }
 
-        public string? ErrorMessage = string.Empty;
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var token = HttpContext.Session.GetString("AuthToken");
-
-            if (token != null)
+                
+            if(token == null)
             {
-                var options = new RestClientOptions()
-                {
-                    Authenticator = new JwtAuthenticator(token),
-                    BaseUrl = new Uri(shopAPIConfig.Value.URL)
-                };
-
-                var client = new RestClient(options);
-                var request = new RestRequest("/api/orderStatuses");
-                request.AddHeader("content-type", "application/json");
-                var response = await client.ExecuteGetAsync<List<OrderStatusDto>>(request);
-
-                if (response.IsSuccessful)
-                {
-                    OrderStatuses = response.Data;
-                    logger.LogInformation($"order statuses length: {response.Data.Count}");
-                }
-                else
-                {
-                    ErrorMessage = "asda";
-                }
-            }
-            else
-            {
-                ErrorMessage = "asda";
+                return Unauthorized();
             }
 
+            var options = new RestClientOptions()
+            {
+                Authenticator = new JwtAuthenticator(token),
+                BaseUrl = new Uri(shopAPIConfig.Value.URL)
+            };
+
+            var client = new RestClient(options);
+            var request = new RestRequest("/api/orderStatuses");
+            request.AddHeader("content-type", "application/json");
+            var response = await client.ExecuteGetAsync<List<OrderStatusDto>>(request);
+
+            if(!response.IsSuccessStatusCode || response.Data == null)
+            {
+                return BadRequest();
+            }
+
+            OrderStatuses = response.Data;
+
+            return Page();
         }
     }
 }
