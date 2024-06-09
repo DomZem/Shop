@@ -9,12 +9,7 @@ namespace Shop.Application.ProductCategories.Commands.UpdateProductCategory
     {
         public async Task Handle(UpdateProductCategoryCommand request, CancellationToken cancellationToken)
         {
-            var productCategory = await productCategoriesRepository.GetByIdAsync(request.Id);
-            if (productCategory is null)
-            {
-                throw new NotFoundException("Product category", request.Id.ToString());
-            }
-            //orderStatus.Name = request.Name;
+            var productCategory = await productCategoriesRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException("Product category", request.Id.ToString());
             mapper.Map(request, productCategory);
             await productCategoriesRepository.SaveChanges();
         }

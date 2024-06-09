@@ -1,59 +1,47 @@
-﻿using AutoMapper;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Moq;
 using Shop.Domain.Entities;
 using Shop.Domain.Exceptions;
 using Shop.Domain.Repositories;
 using Xunit;
 
-namespace Shop.Application.Orders.Commands.UpdateOrder.Tests
+namespace Shop.Application.Orders.Commands.DeleteOrder.Tests
 {
-    public class UpdateOrderCommandHandlerTests
+    public class DeleteOrderCommandHandlerTests
     {
         private readonly Mock<IOrdersRepository> _ordersRepositoryMock;
-        private readonly Mock<IMapper> _mapperMock;
+        private readonly DeleteOrderCommandHandler _handler;
 
-        private readonly UpdateOrderCommandHandler _handler;
-
-        public UpdateOrderCommandHandlerTests()
+        public DeleteOrderCommandHandlerTests()
         {
             _ordersRepositoryMock = new Mock<IOrdersRepository>();
-            _mapperMock = new Mock<IMapper>();
-
-            _handler = new UpdateOrderCommandHandler(_ordersRepositoryMock.Object, _mapperMock.Object);
+            _handler = new DeleteOrderCommandHandler(_ordersRepositoryMock.Object);
         }
 
         [Fact]
-        public async Task Handle_WithValidRequest_ShouldUpdateOrder()
+        public async Task Handle_WithValidRequest_ShouldDeleteOrder()
         {
             // arrange
             var orderId = 1;
-            var command = new UpdateOrderCommand()
+            var command = new DeleteOrderCommand()
             {
                 Id = orderId,
-                Street = "",
-                City = "",
-                PostalCode = "",
-                Country = "",
-                ProductQuantity = 1,
-                ProductId = 1,
-                OrderStatusId = 1,
-                OrderedById = "test"
             };
 
             var order = new Order()
             {
-                Id = orderId,
+                Id = orderId
             };
 
-            _ordersRepositoryMock.Setup(o => o.GetByIdAsync(orderId)).ReturnsAsync(order);
+            _ordersRepositoryMock.Setup(o => o.GetByIdAsync(orderId))
+                .ReturnsAsync(order);
+            _ordersRepositoryMock.Setup(o => o.Delete(It.IsAny<Order>()));
 
             // act
             await _handler.Handle(command, CancellationToken.None);
 
             // assert
-            _ordersRepositoryMock.Verify(o => o.SaveChanges(), Times.Once);
-            _mapperMock.Verify(m => m.Map(command, order), Times.Once);
+            _ordersRepositoryMock.Verify(o => o.Delete(order), Times.Once);
         }
 
         [Fact]
@@ -61,7 +49,7 @@ namespace Shop.Application.Orders.Commands.UpdateOrder.Tests
         {
             // arrange
             var orderId = 2;
-            var request = new UpdateOrderCommand()
+            var request = new DeleteOrderCommand()
             {
                 Id = orderId,
             };

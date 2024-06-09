@@ -5,7 +5,7 @@ namespace Shop.Application.Products.Commands.CreateProduct.Tests
 {
     public class CreateProductCommandValidatorTests
     {
-        [Fact()]
+        [Fact]
         public void Validator_ForValidCommand_ShouldNotHaveValidationErrors()
         {
             // arrange
@@ -28,7 +28,7 @@ namespace Shop.Application.Products.Commands.CreateProduct.Tests
             result.ShouldNotHaveAnyValidationErrors();
         }
 
-        [Fact()]
+        [Fact]
         public void Validator_ForInvalidCommand_ShouldHaveValidationErrors()
         {
             // arrange

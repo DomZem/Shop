@@ -22,8 +22,9 @@ namespace Shop.Application.Orders.Commands.CreateOrder
 
             order.TotalPrice = order.ProductQuantity * product.Price;
             product.Quantity -= order.ProductQuantity;
-            await productsRepository.SaveChanges();
+
             // save changes
+            await productsRepository.SaveChanges();
             int id = await ordersRepository.Create(order);
             return id;
         }

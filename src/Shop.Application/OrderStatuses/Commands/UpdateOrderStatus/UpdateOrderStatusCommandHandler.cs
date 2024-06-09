@@ -9,13 +9,8 @@ namespace Shop.Application.OrderStatuses.Commands.UpdateOrderStatus
     {
         public async Task Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
         {
-            var orderStatus = await orderStatusesRepository.GetByIdAsync(request.Id);
-            if (orderStatus is null)
-            {
-                throw new NotFoundException("Order status", request.Id.ToString());
-            }
-            orderStatus.Name = request.Name;
-            //mapper.Map(request, orderStatus);
+            var orderStatus = await orderStatusesRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException("Order status", request.Id.ToString());
+            mapper.Map(request, orderStatus);
             await orderStatusesRepository.SaveChanges();
         }
     }

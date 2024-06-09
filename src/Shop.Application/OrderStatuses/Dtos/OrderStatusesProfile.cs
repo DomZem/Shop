@@ -14,7 +14,6 @@ namespace Shop.Application.OrderStatuses.Dtos
             CreateMap<CreateOrderStatusCommand, OrderStatus>();
             CreateMap<UpdateOrderStatusCommand, OrderStatus>();
             CreateMap<OrderStatusDto, OrderStatus>();
-
         }
     }
 }

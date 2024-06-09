@@ -107,7 +107,7 @@ namespace Shop.Infrastructure.Seeders
                 Id = "2be03688-814d-45c9-8821-31a00f181cea",
                 Email = "kylianmbappe@gmail.com",
                 EmailConfirmed = true,
-                UserName = "Kylain",
+                UserName = "Kylian",
             };
 
             // Hash user password
