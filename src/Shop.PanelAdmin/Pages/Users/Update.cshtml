@@ -17,7 +17,7 @@
         <form class="d-flex flex-column gap-3" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="User.UserName" class="control-label mb-2"></label>
+                <label class="control-label mb-2">Name</label>
                 <input asp-for="User.UserName" class="form-control" />
                 <span asp-validation-for="User.UserName" class="text-danger"></span>
             </div>
@@ -27,7 +27,7 @@
                 <span asp-validation-for="User.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.PhoneNumber" class="control-label mb-2"></label>
+                <label class="control-label mb-2">Phone Number</label>
                 <input asp-for="User.PhoneNumber" class="form-control" />
                 <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
             </div>

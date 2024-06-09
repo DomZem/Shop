@@ -55,7 +55,7 @@ namespace Shop.PanelAdmin.Pages.Orders
             var orderStatusesRequest = new RestRequest("/api/orderStatuses");
             orderStatusesRequest.AddHeader("content-type", "application/json");
 
-            var usersRequest = new RestRequest("/api/identity/users");
+            var usersRequest = new RestRequest("/api/users");
             usersRequest.AddHeader("content-type", "application/json");
 
             var orderResponse = await client.ExecuteGetAsync<OrderDetailsDto>(orderRequest);
@@ -125,6 +125,8 @@ namespace Shop.PanelAdmin.Pages.Orders
             {
                 return RedirectToPage("./Index");
             }
+
+            ModelState.AddModelError(string.Empty, response.Content);
 
             return Page();
         }

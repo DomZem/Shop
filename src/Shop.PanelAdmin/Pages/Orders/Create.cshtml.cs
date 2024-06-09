@@ -97,11 +97,9 @@ namespace Shop.PanelAdmin.Pages.Orders
             {
                 return RedirectToPage("./Index");
             }
-            else
-            {
-                 ModelState.AddModelError(string.Empty, response.Content);
-            }
-
+            
+            ModelState.AddModelError(string.Empty, response.Content);
+          
             return Page();
         }
     }
